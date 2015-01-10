@@ -1,0 +1,49 @@
+# Maintainer: lane.wiscombe[@]gmail.com>
+# Contributor: artoo <flower_of_life@gmx.net>
+
+pkgbase=klarity-tools-livecd
+pkgname=('klarity-livecd-openrc' 
+	'klarity-livecd-systemd'
+	'klarity-livecd-cli-installer')
+pkgver=r37.496d129
+pkgdesc='Klarity Linux livecd'
+pkgrel=1
+arch=('any')
+url="https://github.com/klarity/klarity-tools-livecd"
+license=('GPL')
+makedepends=('git')
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/${pkgbase}
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+package_klarity-livecd-cli-installer() {
+	pkgdesc='Klarity Linux livecd cli-installer'
+	depends=('')
+	
+	cd ${srcdir}/${pkgbase} #-${pkgver}
+	install -dm 755 $pkgdir/opt/livecd
+	cp -a livecd-cli-installer/* $pkgdir/opt/livecd
+}
+
+package_klarity-livecd-openrc() {
+	pkgdesc='Klarity Linux livecd openrc init scripts'
+	depends=('openrc-core')
+	
+	cd ${srcdir}/${pkgbase} #-${pkgver}
+	install -dm 755 $pkgdir
+	cp -a livecd-init-openrc/* $pkgdir
+	
+}
+
+package_klarity-livecd-systemd() {
+	pkgdesc='Klarity Linux livecd systemd units'
+	depends=('systemd')
+	
+	cd ${srcdir}/${pkgbase} #-${pkgver}
+	install -dm 755 $pkgdir
+	cp -a livecd-init-systemd/* $pkgdir
+}

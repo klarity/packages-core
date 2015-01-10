@@ -1,0 +1,34 @@
+# Maintainer: lane.wiscombe[@]gmail.com>
+# Contributor: artoo <flower_of_life@gmx.net>
+
+pkgname=klarity-tools-git
+pkgver=r429.6445df1
+pkgrel=1
+pkgdesc='Development tools for Klarity Linux'
+arch=('any')
+license=('GPL')
+url='https://github.com/klarity/klarity-tools'
+depends=('namcap' 'openssh' 'rsync'  'mkinitcpio-nfs-utils' 'nbd'
+	'libisoburn' 'squashfs-tools' 'syslinux' 'haveged')
+makedepends=('git')
+optdepends=('qemu: quickly test isos' 'klarity-tools-iso-profiles: Klarity Linux ISO-Image profiles')
+provides=('devtools' 'arch-install-scripts' 'klarity-tools' 'klarityiso')
+conflicts=('devtools' 'arch-install-scripts' 'klarity-tools' 'klarityiso')
+backup=('etc/klarity-tools/klarity-tools.conf')
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+pkgver() {
+	cd ${srcdir}/klarity-tools
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd ${srcdir}/klarity-tools
+	make SYSCONFDIR=/etc PREFIX=/usr
+}
+
+package() {
+	cd ${srcdir}/klarity-tools
+	make SYSCONFDIR=/etc PREFIX=/usr DESTDIR=${pkgdir} install
+}

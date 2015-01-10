@@ -1,0 +1,20 @@
+# Maintainer: anex <lane.wiscombe[@]gmail.com
+
+pkgname=klarity-release
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Manjaro's release definition"
+arch=("any")
+url="http://manjarolinux.org/"
+license=('GPL2')
+depends=('lsb-release')
+source=('lsb-release')
+install="klarity-release.install"
+sha256sums=('SKIP')
+
+package() {
+    # Copy files
+    mkdir -p ${pkgdir}/etc
+    install -m644 ${srcdir}/lsb-release ${pkgdir}/etc/
+
+}
